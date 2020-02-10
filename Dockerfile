@@ -26,7 +26,11 @@ RUN \
   openssl dhparam -out /etc/ssl/private/dhparams.2048.pem 2048 && \
   openssl dhparam -out /etc/ssl/private/dhparams.3072.pem 3072 && \
   openssl dhparam -out /etc/ssl/private/dhparams.4096.pem 4096 && \
-  ln -vs /etc/ssl/private/dhparams.ffdhe4096.pem /etc/ssl/private/dhparams.pem
+  ln -vs /etc/ssl/private/dhparams.ffdhe4096.pem /etc/ssl/private/dhparams.pem && \
+  chown --change --reference /etc/ssl/private/ /etc/ssl/private/* && \
+  chmod --change u=rw,g=r,o-rwx /etc/ssl/private/* && \
+  ls -al /etc/ssl/private/ && \
+  md5sum /etc/ssl/private/*
 
 ENTRYPOINT [ "make-ssl-cert" ]
 CMD [ "--help" ]
